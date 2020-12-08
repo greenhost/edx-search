@@ -11,6 +11,7 @@ from .utils import DateRange
 
 # Default filters that we support, override using COURSE_DISCOVERY_FILTERS setting if desired
 DEFAULT_FILTER_FIELDS = ["org", "modes", "language"]
+log = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
 def course_discovery_filter_fields():
@@ -93,7 +94,7 @@ def course_discovery_search(search_term=None, size=20, from_=0, field_dictionary
         use_field_dictionary["enrollment_start"] = DateRange(None, datetime.utcnow())
 
     if catalog_visibility and catalog_visibility != 'all':
-         use_field_dictionary["catalog_visibility"] = catalog_visibility
+        use_field_dictionary["catalog_visibility"] = catalog_visibility
 
     searcher = SearchEngine.get_search_engine(getattr(settings, "COURSEWARE_INDEX_NAME", "courseware_index"))
     if not searcher:
