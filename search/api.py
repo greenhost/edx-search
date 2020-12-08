@@ -11,8 +11,6 @@ from .utils import DateRange
 
 # Default filters that we support, override using COURSE_DISCOVERY_FILTERS setting if desired
 DEFAULT_FILTER_FIELDS = ["org", "modes", "language"]
-log = logging.getLogger(__name__)  # pylint: disable=invalid-name
-
 
 def course_discovery_filter_fields():
     """ look up the desired list of course discovery filter fields """
