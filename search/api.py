@@ -12,7 +12,6 @@ from .utils import DateRange
 # Default filters that we support, override using COURSE_DISCOVERY_FILTERS setting if desired
 DEFAULT_FILTER_FIELDS = ["org", "modes", "language"]
 
-
 def course_discovery_filter_fields():
     """ look up the desired list of course discovery filter fields """
     return getattr(settings, "COURSE_DISCOVERY_FILTERS", DEFAULT_FILTER_FIELDS)
@@ -75,7 +74,7 @@ def perform_search(
     return results
 
 
-def course_discovery_search(search_term=None, size=20, from_=0, field_dictionary=None):
+def course_discovery_search(search_term=None, size=20, from_=0, field_dictionary=None, catalog_visibility='all'):
     """
     Course Discovery activities against the search engine index of course details
     """
@@ -89,6 +88,9 @@ def course_discovery_search(search_term=None, size=20, from_=0, field_dictionary
         use_field_dictionary.update(field_dictionary)
     if not getattr(settings, "SEARCH_SKIP_ENROLLMENT_START_DATE_FILTERING", False):
         use_field_dictionary["enrollment_start"] = DateRange(None, datetime.utcnow())
+
+    if catalog_visibility and catalog_visibility != 'all':
+        use_field_dictionary["catalog_visibility"] = catalog_visibility
 
     searcher = SearchEngine.get_search_engine(getattr(settings, "COURSEWARE_INDEX_NAME", "courseware_index"))
     if not searcher:
